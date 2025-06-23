@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telemedicine App - System Flowcharts</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        min-height: 100vh;
+        color: #1f2937;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
+
+      .header h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .flowchart-section {
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .flowchart-section:hover {
+        transform: translateY(-5px);
+      }
+
+      .section-title {
+        font-size: 2.2em;
+        color: #1f2937;
+        margin-bottom: 30px;
+        text-align: center;
+        border-bottom: 3px solid #2563eb;
+        padding-bottom: 15px;
+      }
+
+      .flowchart {
+        overflow-x: auto;
+        padding: 20px 0;
+      }
+
+      .flow-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: fit-content;
+      }
+
+      .flow-step {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 15px;
+        margin: 10px;
+        min-width: 280px;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .flow-step:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4);
+      }
+
+      .flow-step h3 {
+        font-size: 1.3em;
+        margin-bottom: 10px;
+      }
+
+      .flow-step p {
+        font-size: 0.95em;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 20px solid #2563eb;
+        margin: 10px auto;
+      }
+
+      .horizontal-flow {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .horizontal-arrow {
+        font-size: 2em;
+        color: #2563eb;
+        margin: 0 10px;
+      }
+
+      .module-overview {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        color: #1f2937;
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 40px;
+        border: 2px solid #e5e7eb;
+      }
+
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .module-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #2563eb;
+        transition: transform 0.3s ease;
+      }
+
+      .module-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .module-card h4 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        color: #1f2937;
+      }
+
+      .module-card p {
+        color: #6b7280;
+        line-height: 1.5;
+      }
+
+      .consultation-flow {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .parallel-flows {
+        display: flex;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .flow-branch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .branch-title {
+        background: #6b7280;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .merge-point {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 20px 40px;
+        border-radius: 15px;
+        font-weight: 600;
+        margin: 20px 0;
+      }
+
+      .feature-highlight {
+        background: #fef3c7;
+        border: 2px solid #f59e0b;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .feature-highlight h4 {
+        color: #92400e;
+        margin-bottom: 10px;
+      }
+
+      .feature-highlight ul {
+        color: #78350f;
+        margin-left: 20px;
+      }
+
+      .feature-highlight li {
+        margin: 5px 0;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .section-title {
+          font-size: 1.8em;
+        }
+
+        .horizontal-flow {
+          flex-direction: column;
+        }
+
+        .horizontal-arrow {
+          transform: rotate(90deg);
+        }
+
+        .parallel-flows {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Telemedicine App</h1>
+        <p>System Flowcharts & Module Overview</p>
+      </div>
+
+      <!-- Module Overview -->
+      <div class="module-overview">
+        <h2 style="text-align: center; font-size: 2.5em; margin-bottom: 20px">
+          📋 System Modules Overview
+        </h2>
+        <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px">
+          13 Core Modules for Complete Healthcare Management
+        </p>
+
+        <div class="module-grid">
+          <div class="module-card">
+            <h4>🔐 Module 1: Doctor Authentication & Role Management</h4>
+            <p>
+              Complete doctor registration, verification, login system with 2FA,
+              session management, and account controls
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>👨‍⚕️ Module 2: Doctor Profile & Dashboard</h4>
+            <p>
+              Doctor dashboard with calendar, patient management, transfer
+              requests, real-time status, and performance summary
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>
+              📋 Module 3: Document Management / Electronic Health Record (EHR)
+            </h4>
+            <p>
+              Document management, e-prescriptions, medical record storage with
+              HL7 compliance and cloud integration
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>🔍 Module 4: Doctor Selection & Patient Transfer</h4>
+            <p>
+              Smart doctor search and filtering system with seamless patient
+              transfer and record sharing capabilities
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>⭐ Module 5: Feedback and Ratings</h4>
+            <p>
+              Comprehensive rating system for patients to rate doctors and
+              doctors to provide feedback on patients
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>📹 Module 6: Audio & Video Consultation (with Recording)</h4>
+            <p>
+              High-quality video/audio calls with recording, text chat, and
+              screen sharing capabilities
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>📅 Module 7: Appointment & Schedule Management</h4>
+            <p>
+              Intelligent appointment booking, scheduling, calendar integration
+              with conflict resolution
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>🔔 Module 8: Notification System</h4>
+            <p>
+              Multi-channel notifications including push notifications, email
+              alerts, and SMS reminders
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>📊 Module 9: Reporting & Analytics</h4>
+            <p>
+              Comprehensive analytics dashboard with charts, visualizations, and
+              PDF/CSV export capabilities
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>🎥 Module 10: Tutorial</h4>
+            <p>
+              Video tutorial system with online and downloadable content for
+              user training and guidance
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>💾 Module 11: Data Backup Plan</h4>
+            <p>
+              Automated backup system ensuring data security, recovery, and
+              business continuity
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>🚀 Module 12: DevOps</h4>
+            <p>
+              Infrastructure management, deployment automation, monitoring, and
+              system maintenance
+            </p>
+          </div>
+          <div class="module-card">
+            <h4>⚙️ Module 13: Settings</h4>
+            <p>
+              User preferences, localization (Bengali), themes, profile
+              management, and security settings
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 1: Doctor Authentication & Role Management -->
+      <div class="flowchart-section">
+        <h2 class="section-title">
+          🔐 Module 1: Doctor Authentication & Role Management
+        </h2>
+        <div class="flowchart">
+          <div class="flow-container">
+            <div class="flow-step">
+              <h3>🎯 Doctor Registration</h3>
+              <p>
+                Complete registration with BMDC verification, NID validation,
+                and document upload
+              </p>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>🔐 Secure Login</h3>
+              <p>
+                Email/phone login with 2FA, session management, and security
+                controls
+              </p>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>🔄 Account Management</h3>
+              <p>
+                Password reset, account deletion, logout, and schedule changes
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-highlight">
+          <h4>🔐 Key Features:</h4>
+          <ul>
+            <li>BMDC & NID verification via third-party APIs</li>
+            <li>Email & SMS OTP verification</li>
+            <li>Two-factor authentication (2FA)</li>
+            <li>Rate limiting and CAPTCHA protection</li>
+            <li>Device limitation and session management</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Module 2: Doctor Profile & Dashboard -->
+      <div class="flowchart-section">
+        <h2 class="section-title">👨‍⚕️ Module 2: Doctor Profile & Dashboard</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>📅 Calendar Management</h3>
+              <p>
+                Custom calendar with appointment viewing and schedule
+                configuration
+              </p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>👥 Patient Management</h3>
+              <p>Patient list, filtering, forms, and prescription management</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🔄 Transfer Requests</h3>
+              <p>Track patient transfer status (pending/accepted/rejected)</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🟢 Active Status</h3>
+              <p>Real-time status management with WebSocket integration</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="flow-step">
+            <h3>📊 Dashboard Summary</h3>
+            <p>Appointment count, reviews, consulting time analytics</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 3: Document Management / EHR -->
+      <div class="flowchart-section">
+        <h2 class="section-title">
+          📋 Module 3: Document Management / Electronic Health Record (EHR)
+        </h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>📤 Upload/Download</h3>
+              <p>
+                Medical records, lab reports, e-prescriptions with cloud storage
+              </p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>💊 E-Prescriptions</h3>
+              <p>Electronic prescription generation with medicine database</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="flow-step">
+            <h3>🏥 Healthcare Data Compliance</h3>
+            <p>
+              HL7 standard implementation for healthcare information exchange
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-highlight">
+          <h4>🏥 HL7 Compliance:</h4>
+          <ul>
+            <li>Health Level Seven international standards</li>
+            <li>Healthcare system interoperability</li>
+            <li>Structured clinical and administrative data</li>
+            <li>Seamless information exchange between systems</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Module 4: Doctor Selection & Patient Transfer -->
+      <div class="flowchart-section">
+        <h2 class="section-title">
+          🔍 Module 4: Doctor Selection & Patient Transfer
+        </h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🔍 Doctor Selection</h3>
+              <p>
+                Search and filter by availability, ratings, specialty, and name
+              </p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🔄 Patient Transfer</h3>
+              <p>Select available specialist and share patient records</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="flow-step">
+            <h3>📅 Schedule Update & Notification</h3>
+            <p>Update doctor schedule and notify patients of transfers</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 5: Feedback and Ratings -->
+      <div class="flowchart-section">
+        <h2 class="section-title">⭐ Module 5: Feedback and Ratings</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>👥 Patient Feedback</h3>
+              <p>
+                1-5 star rating system with reviews and average rating display
+              </p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>👨‍⚕️ Doctor Feedback</h3>
+              <p>Flag non-compliant patients and track missed appointments</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="flow-step">
+            <h3>📊 Feedback Analytics</h3>
+            <p>Rating count API, feedback lists, and patient notifications</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 6: Audio & Video Consultation -->
+      <div class="flowchart-section">
+        <h2 class="section-title">
+          📹 Module 6: Audio & Video Consultation (with Recording)
+        </h2>
+        <div class="flowchart">
+          <div class="consultation-flow">
+            <div class="flow-step">
+              <h3>⏰ Consultation Start</h3>
+              <p>Scheduled consultation session begins with pre-checks</p>
+            </div>
+            <div class="arrow"></div>
+            <div class="parallel-flows">
+              <div class="flow-step">
+                <h3>📹 Video & Audio Calls</h3>
+                <p>HD video/audio with screen sharing capabilities</p>
+              </div>
+              <div class="flow-step">
+                <h3>💬 Text Chat</h3>
+                <p>Real-time messaging during consultation</p>
+              </div>
+              <div class="flow-step">
+                <h3>🎥 Recording</h3>
+                <p>
+                  Session recording with cloud storage and time-limited links
+                </p>
+              </div>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>📊 Session Complete</h3>
+              <p>
+                Recording saved, patient information connected, logs maintained
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 7: Appointment & Schedule Management -->
+      <div class="flowchart-section">
+        <h2 class="section-title">
+          📅 Module 7: Appointment & Schedule Management
+        </h2>
+        <div class="flowchart">
+          <div class="flow-container">
+            <div class="flow-step">
+              <h3>📋 Integration with EHR (Module 3)</h3>
+              <p>Document management and medical record integration</p>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>🔍 Integration with Doctor Selection (Module 4)</h3>
+              <p>Doctor selection and patient transfer capabilities</p>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>📅 Appointment Scheduling</h3>
+              <p>
+                Intelligent booking system with calendar management and conflict
+                resolution
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-highlight">
+          <h4>🔗 Module Integration:</h4>
+          <ul>
+            <li>Seamless integration with EHR system</li>
+            <li>Connected with doctor selection module</li>
+            <li>Real-time availability checking</li>
+            <li>Automated conflict resolution</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Module 8: Notification System -->
+      <div class="flowchart-section">
+        <h2 class="section-title">🔔 Module 8: Notification System</h2>
+        <div class="flowchart">
+          <div class="flow-container">
+            <div class="flow-step">
+              <h3>⚡ Event Triggers</h3>
+              <p>Appointments, transfers, prescriptions, and status changes</p>
+            </div>
+            <div class="arrow"></div>
+            <div class="parallel-flows">
+              <div class="flow-step">
+                <h3>📱 Push Notifications</h3>
+                <p>Real-time app notifications with delivery tracking</p>
+              </div>
+              <div class="flow-step">
+                <h3>📧 Email Alerts</h3>
+                <p>Branded email templates for bookings and reminders</p>
+              </div>
+              <div class="flow-step">
+                <h3>📲 SMS Reminders</h3>
+                <p>Bulk SMS API integration for patient notifications</p>
+              </div>
+            </div>
+            <div class="arrow"></div>
+            <div class="flow-step">
+              <h3>📊 Notification Management</h3>
+              <p>Delivery status logging, user preferences, and analytics</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 9: Reporting & Analytics -->
+      <div class="flowchart-section">
+        <h2 class="section-title">📊 Module 9: Reporting & Analytics</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>📈 Data Collection</h3>
+              <p>Consultation count, patient statistics, performance metrics</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>📊 Visualization</h3>
+              <p>Interactive charts and graphs for data representation</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>📄 Export</h3>
+              <p>PDF and CSV export with customizable reports</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 10: Tutorial -->
+      <div class="flowchart-section">
+        <h2 class="section-title">🎥 Module 10: Tutorial</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🎥 Video Content</h3>
+              <p>YouTube, Google Drive, and iFrame integration</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>☁️ Cloud Upload</h3>
+              <p>Upload videos to cloud platform for streaming</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>📱 Access Options</h3>
+              <p>Download and online viewing capabilities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 11: Data Backup Plan -->
+      <div class="flowchart-section">
+        <h2 class="section-title">💾 Module 11: Data Backup Plan</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🔄 Automated Backup</h3>
+              <p>Scheduled automatic data backup processes</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🏗️ Disaster Recovery</h3>
+              <p>Data recovery and business continuity planning</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🔒 Data Security</h3>
+              <p>Secure backup storage and data integrity verification</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 12: DevOps -->
+      <div class="flowchart-section">
+        <h2 class="section-title">🚀 Module 12: DevOps</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🔧 Infrastructure Management</h3>
+              <p>
+                Server management, scalability, and performance optimization
+              </p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🚀 Deployment</h3>
+              <p>Continuous integration and deployment processes</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>📊 Monitoring</h3>
+              <p>System monitoring, logging, and performance tracking</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 13: Settings -->
+      <div class="flowchart-section">
+        <h2 class="section-title">⚙️ Module 13: Settings</h2>
+        <div class="flowchart">
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>🌐 Localization</h3>
+              <p>Bengali language support and cultural configuration</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🎨 Theme Management</h3>
+              <p>Light/dark theme options and visual customization</p>
+            </div>
+          </div>
+          <div class="arrow"></div>
+          <div class="horizontal-flow">
+            <div class="flow-step">
+              <h3>👤 Profile Settings</h3>
+              <p>Account information management and field controls</p>
+            </div>
+            <span class="horizontal-arrow">→</span>
+            <div class="flow-step">
+              <h3>🔐 Security Controls</h3>
+              <p>Password reset, account deletion, and logout procedures</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          margin-top: 50px;
+          padding: 30px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          color: white;
+        "
+      ></div>
+    </div>
+
+    <script>
+      // Add smooth scrolling and interactive elements
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        });
+
+        // Observe all flowchart sections
+        document.querySelectorAll(".flowchart-section").forEach((section) => {
+          section.style.opacity = "0";
+          section.style.transform = "translateY(30px)";
+          section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+          observer.observe(section);
+        });
+
+        // Add click effects to flow steps
+        document.querySelectorAll(".flow-step").forEach((step) => {
+          step.addEventListener("click", function () {
+            this.style.transform = "scale(1.1)";
+            setTimeout(() => {
+              this.style.transform = "scale(1.05)";
+            }, 200);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
